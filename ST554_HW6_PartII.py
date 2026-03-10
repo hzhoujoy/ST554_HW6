@@ -85,7 +85,7 @@ simulator_instance.plot_sampling_distribution()
 
 #Approximate the two-sided probability of being larger than 2.1
 probability = simulator_instance.find_prob(value=2.1, sided="two-sided")
-print(f"Two-sided probability of the slope being larger than {value}: {probability}")
+print(f"Two-sided probability of the slope being larger than 2.1: {probability}")
 
 #Print out the value of the simulated slopes using the attribute
 print("Simulated slopes (first 10 values):\n", simulator_instance.beta_array[:10, 1])
