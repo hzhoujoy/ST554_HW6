@@ -21,7 +21,7 @@ class SLR_slope_simulator:
     def generate_data(self):
         n = len(self.x)
         #create the 'responses' modeled from the line plus a random deviation
-        self.y = self.beta_0 + self.beta_1 * self.x + self.rng.normal(scale=self.sigma,size=n)
+        self.y = self.beta_0 + self.beta_1 * self.x + self.rng.normal(col=0, scale=self.sigma, size=n)
         return self.y
 
     def fit_slope (self):
