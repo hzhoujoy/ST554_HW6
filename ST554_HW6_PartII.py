@@ -51,12 +51,14 @@ class SLR_slope_simulator:
             n = len(self.beta_array)
             slopes = self.beta_array[:, 1] # Extracting slopes
             if sided == "above":
-                count = sum(1 for slope_val in slopes if slope_val >= value)
+                bool_prob = slopes > value
+                return bool_prob.mean()
             elif sided == "below":
-                count = sum(1 for slope_val in slopes if slope_val <= value)
-            else:  # two-sided
-                count = 2*sum(1 for slope_val in slopes if abs(slope_val) >= abs(value))
-            return count / n
+                bool_prob = slopes < value
+                return bool_prob.mean()
+            else:
+                bool_prob = (slopes > value) | (slopes < -value)
+                return 2*bool_prob.mean()
         else:
             print(f'run_simulations() must be called first')
             return None
@@ -83,7 +85,7 @@ simulator_instance.plot_sampling_distribution()
 
 #Approximate the two-sided probability of being larger than 2.1
 probability = simulator_instance.find_prob(value=2.1, sided="two-sided")
-print(f"Two-sided probability of the slope being larger than 2.1: {probability}")
+print(f"Two-sided probability of the slope being larger than {value}: {probability}")
 
 #Print out the value of the simulated slopes using the attribute
 print("Simulated slopes (first 10 values):\n", simulator_instance.beta_array[:10, 1])
