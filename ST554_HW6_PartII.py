@@ -21,7 +21,7 @@ class SLR_slope_simulator:
     def generate_data(self):
         n = len(self.x)
         #create the 'responses' modeled from the line plus a random deviation
-        self.y = self.beta_0 + self.beta_1 * self.x + self.sigma*self.rng.standard_normal(size=n)
+        self.y = self.beta_0 + self.beta_1 * self.x + self.rng.normal(scale=self.sigma,size=n)
         return self.y
 
     def fit_slope (self):
@@ -49,14 +49,13 @@ class SLR_slope_simulator:
     def find_prob(self, value, sided = "two-sided"):
         if self.beta_array.size > 0:
             n = len(self.beta_array)
-            slopes = self.beta_array[:, 1]     # Extracting slopes
+            slopes = self.beta_array[:, 1] # Extracting slopes
             if sided == "above":
-                count = sum(1 for x_val in slopes if x_val >= value)
+                count = sum(1 for slope_val in slopes if slope_val >= value)
             elif sided == "below":
-                count = sum(1 for x_val in slopes if x_val <= value)
+                count = sum(1 for slope_val in slopes if slope_val <= value)
             else:  # two-sided
-                abs_value = abs(value)
-                count = sum(1 for x_val in slopes if abs(x_val) >= abs_value)
+                count = 2*sum(1 for slope_val in slopes if abs(slope_val) >= abs(value))
             return count / n
         else:
             print(f'run_simulations() must be called first')
@@ -71,10 +70,8 @@ simulator_instance = SLR_slope_simulator(
     seed = 10
 )
 
-#Call the run_simulation() method 
-#Run 10000 simulations
-#num_simulation = 1000
-#run_simulations(num_simulation)    #return the error message
+#Call the plot_sampling_distribution() method
+simulator_instance.plot_sampling_distribution()
 
 #create an instance with run_simulations method
 #Run 10000 simulations
